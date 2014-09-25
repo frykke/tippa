@@ -1,0 +1,106 @@
+/**
+ * Primary Application Stylesheet
+ * 
+ * @langversion JavaScript
+ * 
+ * @author Christopher Pappas
+ * @since  Month 00, 2012
+ */
+
+// nib is a powerful lib for stylus that provides cross-browser css3 mixins.
+// No more vendor prefixes. http://visionmedia.github.com/nib/
+@import 'nib'
+
+
+// Apply a natural box layout model to all elements.
+// http://paulirish.com/2012/box-sizing-border-box-ftw/
+*
+  box-sizing: border-box
+
+
+
+
+body
+  background-image: url('/images/bkg.jpg')
+  background-size: cover;
+  -moz-background-size: cover;  /* Firefox 3.6 */
+  background-position: center;  /* Internet Explorer 7/8 */
+  
+.v-container
+  background-image: url('/images/v-small.jpg')
+  background-repeat: no-repeat
+.navbar-default
+  background-color:  #000
+  border-color: #000
+.navbar-default .navbar-nav > li > a 
+	color: #FCF7C0
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus 
+	color: white
+	background-color: transparent
+.selected-menu-item
+	border-bottom: 2px white solid
+	background-color: #333
+
+#nav-wrap 
+	position: fixed
+	width: 960px
+	background-color: black
+	padding-bottom: 6px
+	left: 50%
+	margin-left: -470px
+
+#nav-wrap ul 
+	-webkit-padding-start: 0px
+
+#main-menu { 
+	margin: 0 auto;
+list-style: none;
+position: relative;
+float: left;
+width: 820px;
+margin-top: 20px;
+}
+#main-menu {margin-left:0;}
+#main-menu li { 
+	display: inline-block;	
+	margin-right:0px;
+}
+#main-menu a {
+	color: #FCF7C0;
+	font-size: 16px;
+	float: left;
+	font-family:arial;
+	padding: 6px 10px 4px 10px;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+#main-menu a:hover { 
+	color: white; 
+}
+#magic-line {
+	position: absolute;
+	bottom: -2px;
+	left: 0;
+	width: 100px;
+	height: 6px;
+	background-image: url(../images/magic-line.png);
+	background-repeat: repeat-x;
+}
+.current_page_item a { 
+	color: white !important; 
+}
+
+.fria-font{
+font-family: Georgia, serif;
+line-height: 1em;
+color: #550;
+font-weight:bold;
+font-size: 20px;
+text-shadow:0px 0px 0 rgb(215,215,215),1px 1px 0 rgb(207,207,207),2px 2px 0 rgb(199,199,199),3px 3px 0 rgb(190,190,190),4px 4px 0 rgb(182,182,182),5px 5px 0 rgb(174,174,174),6px 6px 0 rgb(166,166,166),7px 7px 0 rgb(158,158,158),8px 8px 0 rgb(150,150,150),9px 9px 0 rgb(141,141,141),10px 10px 0 rgb(133,133,133),11px 11px 0 rgb(125,125,125),12px 12px 0 rgb(117,117,117), 13px 13px 0 rgb(109,109,109),14px 14px 13px rgba(0,0,0,0.6),14px 14px 1px rgba(0,0,0,0.5),0px 0px 13px rgba(0,0,0,.2);}
+
+#history-list .box{
+	margin-top:5px;
+	margin-bottom:5px;
+	margin-right:2px;
+}
+

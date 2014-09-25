@@ -1,0 +1,32 @@
+{
+  "name": "groundworkcss",
+  "version": "2.5.0",
+  "main": [
+    "js/groundwork.all.js",
+    "css/groundwork.css"
+  ],
+  "ignore": [
+    "**/.*",
+    "*.json",
+    "*.rb",
+    "css/demo",
+    "js/demo",
+    "Gruntfile.coffee",
+    "node_modules"
+  ],
+  "dependencies": {
+    "jquery": "~1.10.2",
+    "modernizr": "~2.6.2"
+  },
+  "homepage": "https://github.com/groundworkcss/groundwork",
+  "_release": "2.5.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.5.0",
+    "commit": "3b58265546bf29b7b734e0bbec72e0c6a97f3371"
+  },
+  "_source": "git://github.com/groundworkcss/groundwork.git",
+  "_target": "~2.5.0",
+  "_originalSource": "groundwork",
+  "_direct": true
+}
