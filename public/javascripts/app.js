@@ -226,10 +226,7 @@ application = require('Application');
 
 $(function() {
   application.initialize();
-  Backbone.history.start();
-  return application.navigate("home", {
-    trigger: true
-  });
+  return Backbone.history.start();
 });
 
 _compareHelper = function(lvalue, operator, rvalue, options) {
@@ -308,6 +305,10 @@ module.exports = UsersModel = (function(_super) {
     this.initialize = __bind(this.initialize, this);
     return UsersModel.__super__.constructor.apply(this, arguments);
   }
+
+  UsersModel.prototype.defaults = {
+    "status": "initiation"
+  };
 
   UsersModel.prototype.initialize = function() {
     this.docUrl = 'https://docs.google.com/spreadsheets/d/1UHKVbr2w_bH7-SKywn9EyCeU6hxq8QzhokjQslbQQoc/pubhtml';
@@ -502,7 +503,7 @@ module.exports = Model = (function(_super) {
  * @author 
  * @since
  */
-var EventsView, HomeView, Router, UsersView, application,
+var EventsModel, EventsView, HomeView, Router, UsersView, application,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -510,9 +511,13 @@ application = require('Application');
 
 UsersView = require('../views/UsersView');
 
-EventsView = require('../views/EventsView');
+EventsModel = require('../models/EventsModel');
 
-HomeView = require('../views/HomeView');
+EventsView = require('../views/react/EventsView');
+
+HomeView = require('../views/react/HomeView');
+
+console.log(HomeView);
 
 module.exports = Router = (function(_super) {
   __extends(Router, _super);
@@ -543,7 +548,9 @@ module.exports = Router = (function(_super) {
   Router.prototype.home = function() {
     application.menuView.setSelectedItem('home');
     $('#menu-container').html(application.menuView.render().el);
-    return $('#main-container').html((new HomeView()).render().el);
+    console.log($('#main-container'));
+    console.log($('#main-container').get());
+    return React.renderComponent(HomeView({}), $('#main-container').get(0));
   };
 
   Router.prototype.users = function() {
@@ -557,9 +564,13 @@ module.exports = Router = (function(_super) {
   };
 
   Router.prototype.events = function() {
+    var eventsModel;
     application.menuView.setSelectedItem('events');
     $('#menu-container').html(application.menuView.render().el);
-    return $('#main-container').html((new EventsView()).el);
+    eventsModel = new EventsModel();
+    return React.renderComponent(EventsView({
+      model: eventsModel
+    }), $('#main-container').get(0));
   };
 
   return Router;
@@ -1032,6 +1043,118 @@ module.exports = UsersView = (function(_super) {
   return UsersView;
 
 })(View);
+});
+
+;require.register("views/react/EventView", function(exports, require, module) {
+var EventView, b, button, div, label, td, tr, _ref;
+
+_ref = React.DOM, tr = _ref.tr, td = _ref.td, b = _ref.b, button = _ref.button, div = _ref.div, label = _ref.label;
+
+module.exports = EventView = React.createClass({
+  getInitialState: function() {
+    return {
+      tips: ''
+    };
+  },
+  render: function() {
+    return tr({}, [
+      td({}, [b({}, [this.props.home, ' - ', this.props.away, ' ', this.props.startAt]), div({}, [this.props.sport, ' - ', this.props.country, ' ', this.props.city, ' ', this.props.league])]), td({}, div({
+        className: 'btn-group'
+      }, [
+        td({}, button({
+          type: 'button',
+          value: '1',
+          className: 'btn btn-default',
+          onClick: this.handleTipsClicked
+        }, '1')), td({}, button({
+          type: 'button',
+          value: 'X',
+          className: 'btn btn-default',
+          onClick: this.handleTipsClicked
+        }, 'X')), td({}, button({
+          type: 'button',
+          value: '2',
+          className: 'btn btn-default',
+          onClick: this.handleTipsClicked
+        }, '2')), td({}, label({
+          className: 'bounceInLeft animated'
+        }, this.state.tips))
+      ]))
+    ]);
+  },
+  handleTipsClicked: function(e) {
+    console.log(e);
+    return this.setState({
+      tips: e.target.value
+    });
+  }
+});
+});
+
+;require.register("views/react/EventsView", function(exports, require, module) {
+var EventView, EventsView, div, h3, table, _ref;
+
+EventView = require('../../views/react/EventView');
+
+_ref = React.DOM, div = _ref.div, h3 = _ref.h3, table = _ref.table;
+
+console.log(Backbone);
+
+module.exports = EventsView = React.createClass({
+  mixins: [Backbone.React.Component.mixin],
+  render: function() {
+    var events;
+    console.log(this.props.Events);
+    if (this.props.Events) {
+      events = this.props.Events.map(EventView);
+      return div({
+        className: 'one half'
+      }, div({}, [
+        h3({}, 'Aktuella matcher'), div({}, table({
+          className: 'table table-hover'
+        }, {
+          events: events
+        }))
+      ]));
+    } else {
+      return div({
+        className: 'one half'
+      }, div({}, [h3({}, 'Aktuella matcher'), div({}, '----Laddar----')]));
+    }
+  }
+});
+});
+
+;require.register("views/react/HomeView", function(exports, require, module) {
+var HomeView, div, img, _ref;
+
+_ref = React.DOM, div = _ref.div, img = _ref.img;
+
+module.exports = HomeView = React.createClass({
+  render: function() {
+    return div({
+      className: 'container'
+    }, div({
+      className: 'row'
+    }, [
+      div({
+        className: 'one third'
+      }, null), div({
+        className: 'one third'
+      }, [
+        img({
+          src: '/images/dendarmusiken.png',
+          alt: 'Den där musiken'
+        }, null), div({
+          className: 'bounceInDown animated'
+        }, img({
+          src: '/images/FriaLogo2-sm.png',
+          alt: 'Logga'
+        }, null))
+      ])
+    ]));
+  }
+});
 });
 
 ;require.register("views/supers/View", function(exports, require, module) {

@@ -78,16 +78,6 @@ td { vertical-align: top; }
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-body {
-  background-image: url("/images/bkg.jpg");
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  background-size: cover;
-  -moz-background-size: cover;
-/* Firefox 3.6 */
-  background-position: center;
-/* Internet Explorer 7/8 */
-}
 .v-container {
   background-image: url("/images/v-small.jpg");
   background-repeat: no-repeat;

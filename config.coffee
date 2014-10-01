@@ -10,7 +10,7 @@ exports.config =
       joinTo:
         'javascripts/app.js': /^app/
         'javascripts/vendor.js': /^(vendor|bower_components)/
-        'test/test.js': /^test\/app/
+        'test/test.js': /^test/
     stylesheets:
       defaultExtension: 'styl'
       joinTo: 'stylesheets/app.css'

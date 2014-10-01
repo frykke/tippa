@@ -9,8 +9,11 @@
 
 application = require( 'Application' )
 UsersView = require( '../views/UsersView' )
-EventsView = require( '../views/EventsView' )
-HomeView = require( '../views/HomeView' )
+EventsModel = require( '../models/EventsModel' )
+EventsView = require( '../views/react/EventsView' )
+HomeView = require( '../views/react/HomeView' )
+console.log HomeView
+
 module.exports = class Router extends Backbone.Router
 
 	###//--------------------------------------
@@ -29,7 +32,13 @@ module.exports = class Router extends Backbone.Router
 	home: ->
 		application.menuView.setSelectedItem('home')
 		$( '#menu-container' ).html( application.menuView.render().el )
-		$( '#main-container' ).html( (new HomeView()).render().el  )
+		#console.log HomeView
+		#console.log UsersView
+		console.log $('#main-container')
+		console.log $('#main-container').get()
+
+		React.renderComponent (HomeView {}), $('#main-container').get(0)
+		#$( '#main-container' ).html( (new HomeView()).render().el  )
 	
 	users: ->
 		application.menuView.setSelectedItem('users')
@@ -42,5 +51,7 @@ module.exports = class Router extends Backbone.Router
 	events: ->
 		application.menuView.setSelectedItem('events')
 		$( '#menu-container' ).html( application.menuView.render().el )
-		$( '#main-container' ).html( (new EventsView()).el )
+		#$( '#main-container' ).html( (new EventsView()).el )
+		eventsModel = new EventsModel()
+		React.renderComponent((EventsView ({model:eventsModel})), $('#main-container').get(0))
 	

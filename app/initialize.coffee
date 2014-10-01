@@ -18,7 +18,7 @@ $ ->
 	Backbone.history.start()
 
 	# goto home page
-	application.navigate("home", {trigger: true});
+	#application.navigate("home", {trigger: true});
         
 
 _compareHelper = (lvalue, operator, rvalue, options) ->  
