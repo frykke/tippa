@@ -121,9 +121,12 @@ Application = {
   //--------------------------------------
    */
   initialize: function() {
-    var MenuView, Router;
-    MenuView = require('views/MenuView');
-    this.menuView = new MenuView();
+    var MenuItemsModel, MenuView, Router;
+    MenuView = require('views/react/MenuView');
+    MenuItemsModel = require('models/MenuItemsModel');
+    React.renderComponent(MenuView({
+      collection: new MenuItemsModel()
+    }), $('#menu-container').get(0));
     Router = require('routers/Router');
     this.router = new Router();
     return typeof Object.freeze === "function" ? Object.freeze(this) : void 0;
@@ -321,6 +324,69 @@ module.exports = UsersModel = (function(_super) {
 })(GoogleDocsModel);
 });
 
+;require.register("models/MenuItemModel", function(exports, require, module) {
+var MenuItemModel, Model,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Model = require('./supers/Model');
+
+module.exports = MenuItemModel = (function(_super) {
+  __extends(MenuItemModel, _super);
+
+  function MenuItemModel() {
+    return MenuItemModel.__super__.constructor.apply(this, arguments);
+  }
+
+  return MenuItemModel;
+
+})(Model);
+});
+
+;require.register("models/MenuItemsModel", function(exports, require, module) {
+var Collection, MenuItemModel, MenuItemsModel,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Collection = require('./supers/Collection');
+
+MenuItemModel = require('./MenuItemModel');
+
+module.exports = MenuItemsModel = (function(_super) {
+  __extends(MenuItemsModel, _super);
+
+  function MenuItemsModel() {
+    return MenuItemsModel.__super__.constructor.apply(this, arguments);
+  }
+
+  MenuItemsModel.prototype.model = MenuItemModel;
+
+  MenuItemsModel.prototype.initialize = function() {
+    console.log('init col');
+    console.log(this);
+    this.push(new MenuItemModel({
+      url: 'home',
+      text: 'tippa:',
+      itemSelected: true
+    }));
+    this.push(new MenuItemModel({
+      url: 'events',
+      text: 'Matcher',
+      itemSelected: false
+    }));
+    this.push(new MenuItemModel({
+      url: 'users',
+      text: 'Användare',
+      itemSelected: false
+    }));
+    return console.log(this);
+  };
+
+  return MenuItemsModel;
+
+})(Collection);
+});
+
 ;require.register("models/UsersModel", function(exports, require, module) {
 var GoogleDocsModel, UsersModel,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
@@ -503,13 +569,15 @@ module.exports = Model = (function(_super) {
  * @author 
  * @since
  */
-var EventsModel, EventsView, HomeView, Router, UsersView, application,
+var EventsModel, EventsView, HomeView, Router, UsersModel, UsersView, application,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 application = require('Application');
 
-UsersView = require('../views/UsersView');
+UsersModel = require('../models/UsersModel');
+
+UsersView = require('../views/react/UsersView');
 
 EventsModel = require('../models/EventsModel');
 
@@ -546,27 +614,19 @@ module.exports = Router = (function(_super) {
    */
 
   Router.prototype.home = function() {
-    application.menuView.setSelectedItem('home');
-    $('#menu-container').html(application.menuView.render().el);
-    console.log($('#main-container'));
-    console.log($('#main-container').get());
     return React.renderComponent(HomeView({}), $('#main-container').get(0));
   };
 
   Router.prototype.users = function() {
-    var usersView;
-    application.menuView.setSelectedItem('users');
-    $('#menu-container').html(application.menuView.render().el);
-    console.log(UsersView);
-    usersView = new UsersView();
-    console.log(usersView);
-    return $('#main-container').html((new UsersView()).el);
+    var usersModel;
+    usersModel = new UsersModel();
+    return React.renderComponent(UsersView({
+      model: usersModel
+    }), $('#main-container').get(0));
   };
 
   Router.prototype.events = function() {
     var eventsModel;
-    application.menuView.setSelectedItem('events');
-    $('#menu-container').html(application.menuView.render().el);
     eventsModel = new EventsModel();
     return React.renderComponent(EventsView({
       model: eventsModel
@@ -1141,18 +1201,122 @@ module.exports = HomeView = React.createClass({
         className: 'one third'
       }, null), div({
         className: 'one third'
-      }, [
-        img({
-          src: '/images/dendarmusiken.png',
-          alt: 'Den där musiken'
-        }, null), div({
-          className: 'bounceInDown animated'
-        }, img({
-          src: '/images/FriaLogo2-sm.png',
-          alt: 'Logga'
-        }, null))
-      ])
+      }, div({
+        className: 'bounceInDown animated'
+      }, 'Utmana dina tipsvänner!'))
     ]));
+  }
+});
+});
+
+;require.register("views/react/MenuItemView", function(exports, require, module) {
+var EventView, a, li, _ref;
+
+_ref = React.DOM, li = _ref.li, a = _ref.a;
+
+module.exports = EventView = React.createClass({
+  render: function() {
+    var _ref1;
+    return li({
+      className: (_ref1 = this.props.itemSelected) != null ? _ref1 : {
+        'selected-menu-item': ''
+      }
+    }, a({
+      className: 'noicon',
+      href: '#' + this.props.url
+    }, this.props.text));
+  }
+});
+});
+
+;require.register("views/react/MenuView", function(exports, require, module) {
+var MenuItemView, MenuView, a, div, img, nav, ul, _ref;
+
+MenuItemView = require('../../views/react/MenuItemView');
+
+_ref = React.DOM, div = _ref.div, nav = _ref.nav, a = _ref.a, ul = _ref.ul, img = _ref.img;
+
+console.log(Backbone);
+
+module.exports = MenuView = React.createClass({
+  mixins: [Backbone.React.Component.mixin],
+  render: function() {
+    var menuItems;
+    console.log(this.props.collection);
+    if (this.props.collection) {
+      menuItems = this.props.collection.map(MenuItemView);
+      return div({
+        className: 'row'
+      }, div({
+        className: 'one whole'
+      }, nav({
+        role: "navigation",
+        className: "nav nocollapse black"
+      }, [
+        a({
+          href: "/#home"
+        }, img({
+          alt: "Tippa",
+          src: "/images/TippaLogo.png"
+        }, null)), ul({
+          role: 'menubar'
+        }), {
+          menuItems: menuItems
+        }
+      ])));
+    } else {
+      return div({
+        className: 'row'
+      }, div({
+        className: 'one whole'
+      }, 'Laddar'));
+    }
+  }
+});
+});
+
+;require.register("views/react/UserView", function(exports, require, module) {
+var EventView, b, button, div, label, td, tr, _ref;
+
+_ref = React.DOM, tr = _ref.tr, td = _ref.td, b = _ref.b, button = _ref.button, div = _ref.div, label = _ref.label;
+
+module.exports = EventView = React.createClass({
+  render: function() {
+    return tr({}, [td({}, b({}, this.props.username)), td({}, this.props.name), td({}, this.props.email)]);
+  }
+});
+});
+
+;require.register("views/react/UsersView", function(exports, require, module) {
+var EventsView, UserView, div, h3, table, _ref;
+
+UserView = require('../../views/react/UserView');
+
+_ref = React.DOM, div = _ref.div, h3 = _ref.h3, table = _ref.table;
+
+console.log(Backbone);
+
+module.exports = EventsView = React.createClass({
+  mixins: [Backbone.React.Component.mixin],
+  render: function() {
+    var users;
+    console.log(this.props.Users);
+    if (this.props.Users) {
+      users = this.props.Users.map(UserView);
+      return div({
+        className: 'one half'
+      }, div({}, [
+        h3({}, 'Användare'), div({}, table({
+          className: 'table table-hover'
+        }, {
+          users: users
+        }))
+      ]));
+    } else {
+      return div({
+        className: 'one half'
+      }, div({}, [h3({}, 'Användare'), div({}, '----Laddar----')]));
+    }
   }
 });
 });

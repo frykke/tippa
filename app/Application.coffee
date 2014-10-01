@@ -25,10 +25,11 @@ Application =
 
     initialize: ->
         
-        MenuView = require('views/MenuView')
-        
+        MenuView = require('views/react/MenuView')
+        MenuItemsModel = require('models/MenuItemsModel')
         # Initialize views
-        @menuView = new MenuView()
+        React.renderComponent((MenuView ({collection:new MenuItemsModel()})), $('#menu-container').get(0))
+    
         
         # Import views
         Router = require('routers/Router')

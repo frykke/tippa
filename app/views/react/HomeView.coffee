@@ -6,11 +6,7 @@ module.exports = HomeView = React.createClass
 			div {className:'row'}, 
 				[div {className:'one third'}, null
 				 div {className:'one third'}, 
-					[
-						img {src:'/images/dendarmusiken.png', alt:'Den där musiken'}, null
-						div {className:'bounceInDown animated'}, 
-							img {src:'/images/FriaLogo2-sm.png', alt:'Logga'}, null
-					]
+					div {className:'bounceInDown animated'}, 'Utmana dina tipsvänner!'
 				]
 
 
